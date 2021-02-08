@@ -4,7 +4,6 @@ import { ListItem, Icon } from 'react-native-elements';
 import firebase from 'firebase';
 import MyHeader from '../components/MyHeader';
 import SwipeableFlatlist from '../components/SwipeableFlatlist';
-
 import db from '../config';
 
 export default class NotificationScreen extends Component{
@@ -20,7 +19,8 @@ export default class NotificationScreen extends Component{
   }
 
   getNotifications=()=>{
-    this.requestRef = db.collection("all_notifications")
+    console.log(this.state.userId)
+    this.notificationRef = db.collection("all_notifications")
     .where("notification_status", "==", "unread")
     .where("targeted_user_id",'==',this.state.userId)
     .onSnapshot((snapshot)=>{
@@ -41,7 +41,7 @@ export default class NotificationScreen extends Component{
   }
 
   componentWillUnmount(){
-    notificationRef()
+    this.notificationRef()
   }
 
   keyExtractor = (item, index) => index.toString()
@@ -50,7 +50,7 @@ export default class NotificationScreen extends Component{
       return (
         <ListItem
           key={index}
-          leftElement={<Icon name="book" type="font-awesome" color ='#696969'/>}
+        
           title={item.item_name}
           titleStyle={{ color: 'black', fontWeight: 'bold' }}
           subtitle={item.message}
